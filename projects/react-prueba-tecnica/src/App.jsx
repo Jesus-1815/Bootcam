@@ -5,15 +5,17 @@
 import { useEffect, useState } from "react"
 
 export function App(){
-    const [fact,setFact] = useState ('loremn ipsum cat fact whatever')
+    const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
+    const [fact,setFact] = useState ()
     useEffect(()=>{
-        fetch('https://catfact.ninja/fact')
-        .then(res => res.jason())
+        fetch(CAT_ENDPOINT_RANDOM_FACT)
+        .then(res => res.json())
+        .then(data=> setFact(data.fact))
     },[])
     return(
         <main>
              <h1>Appp de gatos</h1>
-             <p>{fact}</p>
+             {fact &&<p>{fact}</p>} 
         </main>
     )
 }
