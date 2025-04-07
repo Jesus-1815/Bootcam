@@ -4,22 +4,12 @@
 // Esto suele realizarse usando métodos como fetch() o bibliotecas como axios para hacer solicitudes HTTP.
 import { useEffect, useState } from "react"
 import './App.css'
+import {getRandomFact} from './services/facts.js'
 export function App(){
-    const CAT_ENDPOINT_RANDOM_FACT = 'https://catfact.ninja/fact'
     const [fact,setFact] = useState ()
     const [imageUrl,setImageUrl]= useState ()
     //Efecto para recuperar la cita al cargar la pagina
-    useEffect(()=>{
-        fetch(CAT_ENDPOINT_RANDOM_FACT)
-        .then(res => {
-            if(!res.ok)throw new Error('error en el fetch')
-            return res.json()})
-
-        .then(data=> {
-            const{ fact } = data
-            setFact(fact)
-        })
-    },[])/*Aqui el arreglo es asi para que no ejecute cada ves que renderize el componente si pusierael set fact cada ves que el fact cambie*/ 
+    useEffect(()=>{getRandomFact().then(newFact => setFact(newFact))},[])/*Aqui el arreglo es asi para que no ejecute cada ves que renderize el componente si pusierael set fact cada ves que el fact cambie*/ 
     //para recuperar la imagen cada ves que tenemos una cita nueva
     useEffect (()=>{
         if(!fact)return
@@ -32,9 +22,13 @@ export function App(){
             setImageUrl(url)
         })  
     },[fact])
+    const handleClick = ()=>{
+       getRandomFact().then(newFact => setFact(newFact))
+    }
     return(
         <main>
              <h1>Appp de gatos</h1>
+             <button onClick={handleClick}>get new fact</button>
              <section>
              {fact &&<p>{fact}</p>} 
              {imageUrl && <img src = {imageUrl} alt={`imagen extraida de las 3 palabras de ${fact}`}/>}
