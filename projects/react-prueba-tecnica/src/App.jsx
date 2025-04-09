@@ -4,26 +4,15 @@
 // Esto suele realizarse usando métodos como fetch() o bibliotecas como axios para hacer solicitudes HTTP.
 import { useEffect, useState } from "react"
 import './App.css'
-import {getRandomFact} from './services/facts.js'
+import { useCatFact } from "./Hooks/useCatFact.js"
+import { useCatImage } from "./Hooks/useCatImage.js"
 export function App(){
-    const [fact,setFact] = useState ()
-    const [imageUrl,setImageUrl]= useState ()
-    //Efecto para recuperar la cita al cargar la pagina
-    useEffect(()=>{getRandomFact().then(newFact => setFact(newFact))},[])/*Aqui el arreglo es asi para que no ejecute cada ves que renderize el componente si pusierael set fact cada ves que el fact cambie*/ 
-    //para recuperar la imagen cada ves que tenemos una cita nueva
-    useEffect (()=>{
-        if(!fact)return
-        const threefirstWord =  fact.split(' ',3)
-        console.log(threefirstWord);
-        fetch(`https://cataas.com/cat/says/${threefirstWord}?fontSize=50&fontColor=red&json=true`)
-        .then(res =>res.json())
-        .then(response =>{
-            const {url} = response
-            setImageUrl(url)
-        })  
-    },[fact])
+    //como es un custom hooks es como una caja negra que simplemente trae el url de la imagen lo traemos a function app
+    const {fact,getFactAndUpdateReactState} = useCatFact()//este va primero porque el de image nececita la cita 
+    const {imageUrl} = useCatImage({fact})
     const handleClick = ()=>{
-       getRandomFact().then(newFact => setFact(newFact))
+        //llamamos ahora el get fact del customhooks 
+       getFactAndUpdateReactState()
     }
     return(
         <main>
