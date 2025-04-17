@@ -1,16 +1,21 @@
 // @ts-check
-import { test, expect } from '@playwright/test';
-const LOCALHOST_URL = 'http://localhost:5173/';
+import { test, expect } from '@playwright/test'
 
-test('app show random facts and image ', async ({ page }) => {
-  await page.goto(LOCALHOST_URL);
-  const text = await  page.getByRole('paragraph')
+const CAT_PREFIX_IMAGE_URL = 'https://cataas.com'
+
+test('app shows random fact and image', async ({ page }) => {
+  await page.goto('/') // baseURL ya está configurado en playwright.config.js
+
+  const text = await page.locator('p') // Selector de párrafo genérico
   const image = await page.getByRole('img')
 
   const textContent = await text.textContent()
   const imageSrc = await image.getAttribute('src')
-  await expect(textContent?.length).toBeGreaterThan(0)
-  await expect(imageSrc?.startsWith?.length).toBeGreaterThan(0)
-});
+  console.log({textContent, imageSrc} )
+
+  expect(textContent?.length).toBeGreaterThan(0)
+  expect(imageSrc?.startsWith(CAT_PREFIX_IMAGE_URL)).toBeTruthy()
+})
+
 
 
