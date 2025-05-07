@@ -1,10 +1,15 @@
-import { useEffect, useState } from 'react'
-//esta funcion controla la logica de los errores evaluando el query que esta en el input
- export function useSearch(){
+import { useEffect, useRef, useState } from 'react'
+
+export function useSearch(){
   const[query,setQuery]=useState('')
   const[error,setError]=useState(null)
+  const isFirstInput = useRef(true)
   
   useEffect(() => {
+    if(isFirstInput.current){
+        isFirstInput.current = query == ''
+        return
+    }
     if (query === '') {
       setError('No se puede buscar una película vacía')
       return
@@ -19,5 +24,5 @@ import { useEffect, useState } from 'react'
     }
     setError(null)
   }, [query])
-  return(query,setQuery,error)
+  return{query,setQuery,error}
 }

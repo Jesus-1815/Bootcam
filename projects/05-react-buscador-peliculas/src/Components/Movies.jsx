@@ -1,10 +1,11 @@
+
 //esto es el listado que renderiza en la pagina aqui listamos todo 
 export function ListOfMovies  ({movies}){
     return(
-      <ul>
+      <ul className="movies">
       {
         movies.map(movie=>(
-          <li key={movie.id}>
+          <li className="movie" key={movie.id}>
             <h3>{movie.title}</h3>
             <h3>{movie.year}</h3>
             <img src={movie.poster} alt={movie.title}></img>
