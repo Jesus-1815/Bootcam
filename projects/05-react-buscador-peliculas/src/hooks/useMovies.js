@@ -1,29 +1,23 @@
 import { useState } from 'react'
-import withResults from '../Mock/with-results.json'
-import wihoutResults from '../Mock/no-results.json'
+import { searchMovie } from '../services/movie'
 //Esta funcion que contiene el mapepedMovies lo que hacemos es intancear los datos de la app a este componente
 //para poder manejarlos nosotros mismos y no depender del contrato directo de la api
 export function useMovies ({query}){
-  const [responseMovies,setResponseMovies]= useState([])
-    const movies = responseMovies.Search
-    const mappedMovies = movies?.map(movie =>({
-      id: movie.imdbID,
-      title: movie.Title,
-      year: movie.Year,
-      poster:movie.Poster
-    }))
-
-    const getMovies=()=>{
-      if (query){
-        fetch(`https://www.omdbapi.com/?apikey=4287ad07&s=${query}`) 
-        .then (res => res.json())
-        .then(json => {
-          setResponseMovies(json)
-        })
-      }else{
-        setResponseMovies(wihoutResults)
+  const [movies,setMovie]= useState([])
+  const [loading,setLoading]= useState([false])
+  const [error,setError] = useState([null])
+    const getMovies= async()=>{
+      try{
+        setLoading(true)
+        setError(null)
+        const newMovie = await searchMovie ({query})
+        setMovie(newMovie)
+      }catch(e){
+        setError(e.message)
+      }finally{
+        setLoading(false)
       }
     }
 
-    return {movies:mappedMovies,getMovies}
+    return {movies,loading,getMovies}
   }

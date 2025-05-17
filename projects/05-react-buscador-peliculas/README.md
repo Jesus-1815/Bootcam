@@ -15,9 +15,9 @@ Requerimientos:
 
 ✅-Que el formulario funcione.
 
--Hacer el fechin de datos a la Api
+✅-Haz que las películas se muestren en un grid responsive.
 
--Haz que las películas se muestren en un grid responsive.
+✅-Hacer el fechin de datos a la Api
 
 Primera iteración:
 
